@@ -6,6 +6,8 @@ export async function sendEmail(recipient: Recipient, template: EmailTemplate): 
     throw new Error('SendGrid API key is missing');
   }
 
+  const fromEmail = import.meta.env.VITE_SENDGRID_FROM_EMAIL || 'no-reply@example.com';
+
   const content = template.body.replace(/{{firstName}}/g, recipient.firstName);
 
   const payload = {
@@ -16,7 +18,7 @@ export async function sendEmail(recipient: Recipient, template: EmailTemplate): 
       }
     ],
     from: {
-      email: 'no-reply@example.com',
+      email: fromEmail,
       name: 'EmailPro'
     },
     content: [
