@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import RecipientForm from './components/RecipientForm';
@@ -6,19 +6,33 @@ import TemplateSelector from './components/TemplateSelector';
 import EmailPreview from './components/EmailPreview';
 import SendButton from './components/SendButton';
 import SuccessModal from './components/SuccessModal';
-import { emailTemplates } from './data/emailTemplates';
+import TemplateEditor from './components/TemplateEditor';
+import { useEmailTemplates } from './hooks/useEmailTemplates';
 import { Recipient } from './types';
 
 function App() {
+  const { templates, addTemplate, updateTemplate, deleteTemplate } =
+    useEmailTemplates();
+
   const [recipient, setRecipient] = useState<Recipient>({
     firstName: '',
     email: ''
   });
-  
-  const [selectedTemplateId, setSelectedTemplateId] = useState(emailTemplates[0].id);
+
+  const [selectedTemplateId, setSelectedTemplateId] = useState(
+    templates[0]?.id || ''
+  );
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-  const selectedTemplate = emailTemplates.find(template => template.id === selectedTemplateId) || emailTemplates[0];
+
+  useEffect(() => {
+    if (templates.length && !templates.find(t => t.id === selectedTemplateId)) {
+      setSelectedTemplateId(templates[0].id);
+    }
+  }, [templates, selectedTemplateId]);
+
+  const selectedTemplate =
+    templates.find(template => template.id === selectedTemplateId) ||
+    templates[0];
   
   const isFormValid = () => {
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient.email);
@@ -60,8 +74,8 @@ function App() {
                 onChange={setRecipient} 
               />
               
-              <TemplateSelector 
-                templates={emailTemplates}
+              <TemplateSelector
+                templates={templates}
                 selectedTemplateId={selectedTemplateId}
                 onSelect={setSelectedTemplateId}
               />
@@ -73,8 +87,15 @@ function App() {
             />
           </div>
           
+          <TemplateEditor
+            templates={templates}
+            onAdd={addTemplate}
+            onUpdate={updateTemplate}
+            onDelete={deleteTemplate}
+          />
+
           <div className="flex justify-center mt-8">
-            <SendButton 
+            <SendButton
               recipient={recipient}
               isValid={isFormValid()}
               onSend={handleSend}
