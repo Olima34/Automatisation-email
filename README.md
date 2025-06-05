@@ -13,6 +13,13 @@ npm run build     # génère la version de production
 npm run lint      # vérifie le code avec ESLint
 ```
 
+## Configuration
+
+Copiez le fichier `.env.example` présent dans le dossier `project` et renommez-le
+en `.env`. Renseignez votre clé d'API SendGrid dans `VITE_SENDGRID_API_KEY`.
+Vous pouvez également définir `VITE_SENDGRID_FROM_EMAIL` pour modifier l'adresse
+d'expéditeur utilisée par défaut.
+
 ## Structure des dossiers
 
 - `src/components` : composants React utilisés par l'application (en-tête, formulaire, aperçu, etc.).
