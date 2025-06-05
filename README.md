@@ -4,7 +4,7 @@ Ce dépôt contient une application React/TypeScript permettant d'automatiser l'
 
 ## Installation et commandes
 
-Exécutez les commandes suivantes dans le dossier `project` :
+Exécutez les commandes suivantes à la racine du dépôt :
 
 ```bash
 npm install       # installation des dépendances
@@ -15,11 +15,11 @@ npm run lint      # vérifie le code avec ESLint
 
 ## Configuration
 
-Un fichier `.env.example` est fourni à la racine du dépôt. Copiez-le dans le
-dossier `project` sous le nom `.env` :
+Un fichier `.env.example` est fourni à la racine du dépôt. Copiez-le au même
+endroit sous le nom `.env` :
 
 ```bash
-cp .env.example project/.env
+cp .env.example .env
 ```
 
 Renseignez ensuite les variables suivantes :
@@ -35,4 +35,4 @@ Renseignez ensuite les variables suivantes :
 - `src/data` : données statiques et modèles d'e-mails.
 - `src/types` : définitions TypeScript partagées.
 - `src` : fichiers principaux de l'application (`App.tsx`, `main.tsx`, `index.css`, …).
-- Des fichiers de configuration tels que `vite.config.ts` ou `tailwind.config.js` se trouvent à la racine du dossier `project`.
+- Des fichiers de configuration tels que `vite.config.ts` ou `tailwind.config.js` se trouvent à la racine du dépôt.

@@ -1,14 +1,11 @@
 # Node modules
 node_modules/
-project/node_modules/
 
 # Build artifacts
 dist/
-project/dist/
 
 # Environment files
 .env
-project/.env
 
 # IDE files
 .idea/

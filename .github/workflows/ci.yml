@@ -14,14 +14,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: project/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install dependencies
         run: npm install
-        working-directory: project
       - name: Lint
         run: npm run lint
-        working-directory: project
       - name: Build
         run: npm run build
-        working-directory: project
         continue-on-error: true
