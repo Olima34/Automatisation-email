@@ -4,22 +4,22 @@ import { Recipient } from '../types';
 interface SendButtonProps {
   recipient: Recipient;
   isValid: boolean;
-  onSend: () => void;
+  onSend: () => Promise<void>;
 }
 
 const SendButton: React.FC<SendButtonProps> = ({ recipient, isValid, onSend }) => {
   const [isSending, setIsSending] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!isValid) return;
-    
+
     setIsSending(true);
-    
-    // Simulate sending delay
-    setTimeout(() => {
-      onSend();
+
+    try {
+      await onSend();
+    } finally {
       setIsSending(false);
-    }, 1500);
+    }
   };
 
   return (

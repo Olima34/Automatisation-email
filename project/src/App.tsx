@@ -8,6 +8,7 @@ import SendButton from './components/SendButton';
 import SuccessModal from './components/SuccessModal';
 import { emailTemplates } from './data/emailTemplates';
 import { Recipient } from './types';
+import { sendEmail } from './api/sendEmail';
 
 function App() {
   const [recipient, setRecipient] = useState<Recipient>({
@@ -17,6 +18,7 @@ function App() {
   
   const [selectedTemplateId, setSelectedTemplateId] = useState(emailTemplates[0].id);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const selectedTemplate = emailTemplates.find(template => template.id === selectedTemplateId) || emailTemplates[0];
   
@@ -25,8 +27,15 @@ function App() {
     return recipient.firstName.trim() !== '' && isEmailValid;
   };
   
-  const handleSend = () => {
-    setShowSuccessModal(true);
+  const handleSend = async () => {
+    try {
+      await sendEmail(recipient, selectedTemplate);
+      setErrorMessage(null);
+      setShowSuccessModal(true);
+    } catch (e) {
+      console.error(e);
+      setErrorMessage("Une erreur est survenue lors de l'envoi de l'email.");
+    }
   };
   
   const handleCloseSuccessModal = () => {
@@ -36,6 +45,7 @@ function App() {
       firstName: '',
       email: ''
     });
+    setErrorMessage(null);
   };
 
   return (
@@ -73,12 +83,15 @@ function App() {
             />
           </div>
           
-          <div className="flex justify-center mt-8">
-            <SendButton 
+          <div className="flex flex-col items-center mt-8 space-y-2">
+            <SendButton
               recipient={recipient}
               isValid={isFormValid()}
               onSend={handleSend}
             />
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
           </div>
         </div>
       </main>
